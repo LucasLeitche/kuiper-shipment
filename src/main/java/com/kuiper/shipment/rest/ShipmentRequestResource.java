@@ -9,6 +9,7 @@ import com.kuiper.shipment.dto.shipmentRequestStatus.response.RequestMetadataDTO
 import com.kuiper.shipment.dto.shipmentRequestStatus.response.ResponseMetadataDTO;
 import com.kuiper.shipment.dto.shipmentRequestStatus.response.SenderDTO;
 import com.kuiper.shipment.dto.shipmentRequestStatus.response.ShipmentRequestStatusResponseDTO;
+import com.kuiper.shipment.dto.shipmentTrancking.ShipmentTrackingDTO;
 import com.kuiper.shipment.service.ShipmentService;
 
 import jakarta.inject.Inject;
@@ -18,7 +19,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 
-@Path("/api/shipment")
+@Path("/api/shipment/1.0")
 public class ShipmentRequestResource {
     @Inject
     ShipmentService shipmentService;
@@ -30,7 +31,7 @@ public class ShipmentRequestResource {
     @APIResponses({ @APIResponse(responseCode = "200", description = "Dado inserido com sucesso"),
 			@APIResponse(responseCode = "400", description = "Requisição inválida"),
 			@APIResponse(responseCode = "500", description = "Erro interno ao inserir dados") })
-    public Response shipmentRequestStatus (ShipmentRequestStatusDTO request) {
+    public Response getShipmentRequestStatus (ShipmentRequestStatusDTO request) {
 
         try {
            // var shipmentMock = shipmentService.getMockResponse(request.getExternalId()); 
@@ -61,6 +62,19 @@ public class ShipmentRequestResource {
         }
 
         
+    }
+
+    @POST
+    @Path("/tracking")
+    @Consumes(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+    public Response getShipmentTracking(ShipmentTrackingDTO request){
+        try{  
+           return Response.ok().build();
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("Erro: " + e.getMessage())
+            .build();
+        }
     }
 
 }

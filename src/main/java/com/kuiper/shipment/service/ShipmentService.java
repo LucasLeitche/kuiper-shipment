@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuiper.shipment.dto.shipmentRequestStatus.response.ShipmentRequestStatusResponseDTO;
+import com.kuiper.shipment.dto.shipmentTrancking.ShipmentTrackingDTO;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -20,7 +21,17 @@ public class ShipmentService {
         }
     }
 
-    public String getMockResponse(Long externalId) {
+    public ShipmentTrackingDTO findTracking(Long customerId){
+        try{
+            String responseJson = getMockResponse(customerId);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(responseJson, ShipmentTrackingDTO.class);
+        } catch(Exception e){
+            throw new RuntimeException("Failed to parse JSON", e);
+        }
+    }
+
+    private String getMockResponse(Long externalId) {
         return "{\n" +
             "  \"shipmentRequestStatusResponse\": {\n" +
             "    \"ResponseMetadata\": {\n" +
@@ -38,3 +49,7 @@ public class ShipmentService {
             "}";
     }  
 }
+
+// Rodar script no banco de dev
+
+// Ver qual schema kestradev ou overscore
